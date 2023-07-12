@@ -1,0 +1,85 @@
+{% extends 'base.html' %}
+{% block content %}
+    <div id="message"></div>
+    <img src="{{ post.image.url }}" alt="post image">
+    {% if not is_liked %}
+        <a href="#"><img id="like" src="" alt="like"></a>
+    {% else %}
+        <a href="#"><img id="like" src="" alt="dislike"></a>
+    {% endif %}
+    <!-- <button data-url="/post/{{ post.id }}" type="button" id="like" style="border: none;">👍</button> -->
+    <p>{{ post.title }}</p>
+    <p>{{ post.body }}</p>
+    <p id="like_amount">{{ likes }}</p>
+    <p><a href="{% url 'profile' post.author %}">{{ post.author }}</a></p>
+    {% if post.edit_time != post.publish_time %}
+        <p>Edited at: {{ post.edit_time }}</p>
+    {% else %}
+        <p>Published at: {{ post.publish_time }}</p>
+    {% endif %}
+
+    {% csrf_token %}
+    <input type="text" name="comment" id="comment">
+    <button data-url="/post/{{ post.id }}" id="submit_btn" type="button">Write!</button>
+
+    {% if comments is None%}
+    <p>There is no comments here</p>
+    {% else %}
+        <div id="comments">
+            {% for comment in comments %}
+                <p>{{ comment.body }}</p>
+            {% endfor %}
+        </div>
+        
+    {% endif %}
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.4/jquery.min.js"></script>
+    <script>
+        function ajax() {
+            $('#submit_btn').click(() => {
+                let btn = $(this);
+                $.ajax(btn.data('url'), {
+                    'type': 'POST',
+                    'async': true,
+                    'dataType': 'json',
+                    'data': {
+                        'csrfmiddlewaretoken': $('input[name="csrfmiddlewaretoken"]').val(),
+                        'action': 'comment',
+                        'comment': $('#comment').val(),
+                       
+                    },
+                    'success': (data) => {
+                            
+                        document.getElementById('comments').innerHTML += data;
+                    }
+                });
+            });
+            $('#like').click(() => {
+                let btn = $(this);
+                $.ajax(btn.data('url'), {
+                    'type': 'POST',
+                    'async': true,
+                    'dataType': 'json',
+                    'data': {
+                        'csrfmiddlewaretoken': $('input[name="csrfmiddlewaretoken"]').val(),
+                        'like': true,
+                        'action': 'like'
+                    },
+                    'success': function (data) {
+
+                        document.getElementById('like_amount').innerText = data['likes']
+                        if(!data['is_liked']) {
+                            console.log(document.getElementById('like').set)
+                            document.getElementById('like').setAttribute('src', '/like');
+                        } else {
+                            document.getElementById('like').setAttribute('src', '/unlike');
+                        }
+                    }
+                });
+            });
+        }
+
+        $().ready(() => {
+            ajax();
+        })
+    </script>
+{% endblock %}

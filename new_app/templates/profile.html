@@ -1,0 +1,15 @@
+{% extends 'base.html' %}
+{% block content %}
+<p>{{ user.username }}</p>
+<p>{{ user.about }}</p>
+<h3>Posts:</h3>
+{% if posts is None %}
+    <p>{{ user.username }} didn't created any posts yet:(</p>
+{% else %}
+    {% for post in posts %}
+        {% if post.author.username == user.username %}
+            {{ post.title }}
+        {% endif %}
+    {% endfor %}
+{% endif %}
+{% endblock %}

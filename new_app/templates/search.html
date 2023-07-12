@@ -1,0 +1,15 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div id="result"></div>
+<dialog>
+    <div>
+        <div>
+            {% csrf_token %}
+            {{ form }}
+        </div>
+    </div>
+</dialog>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.4/jquery.min.js"></script>
+<script src="../static/js/search.js"></script>
+{% endblock %}

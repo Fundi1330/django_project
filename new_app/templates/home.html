@@ -1,0 +1,48 @@
+{% extends 'base.html' %}
+{% block head %}
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.4/jquery.min.js"></script>
+<script src="../static/js/add_post.js"></script>
+<script src="../static/js/search.js"></script>
+{% endblock %}
+{% block content %}
+<button id="open-search-btn">Search</button>
+<dialog id="search">
+    <div>
+        <div>
+            {% csrf_token %}
+            {{ search_form }}
+        </div>
+        <div id="result"></div>
+    </div>
+</dialog>
+<div id="page" style="height: 100%; width: 100%;">
+    <p>You are bot!</p>
+    <div id="post">
+        {% for post in posts %}
+            <a href="/post/{{ post.id }}">{{ post.title }}</a>
+        {% endfor %}
+    </div>
+    <button id="open-dialog-btn">Add post</button>
+</div>
+
+<dialog id="add-image" style="background-color: blue; border-radius: .9375rem; height: 60%; width: 60%; text-align: center;">
+    <form enctype="multipart/form-data" class="image-upload">
+        <input type="file" name="image" id="image" required> 
+    </form>
+    <button id="close-btn">Close</button>
+</dialog>
+
+<dialog id="add-post">
+    <img src="" alt="image" id="post-image">
+    {% csrf_token %}
+    {% for el in form %}
+        {{ el }}
+        {{ el.label }}
+        {{ el.errors }}
+    {% endfor %}
+    <button id="add-post-btn">add post</button>
+    <button id="close-btn1">Close</button>
+</dialog>
+
+
+{% endblock %}

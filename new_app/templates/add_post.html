@@ -1,0 +1,13 @@
+{% extends 'base.html' %}
+{% block content %}
+<h2>Add post</h2>
+<form method="post">
+    {% csrf_token %}
+    {% for el in form %}
+        {{ el }}
+        {{ el.label }}
+        {{ el.errors }}
+    {% endfor %}
+    <input type="submit" value="Add!">
+</form>
+{% endblock %}

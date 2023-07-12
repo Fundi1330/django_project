@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <nav class="nav">
+        <h2>{{ chat.name }}</h2>
+        <p>by {{ chat.author }}</p> 
+    </nav>
+    <section class="messages">
+        {% for message in messages %}
+            {% if message.author == request.user %}
+                <div class="message user-message">
+                    <p class="text">{{ message.text }}</p>
+                    <p class="author">{{ message.author }}</p>
+                </div>
+            {% else %}
+                <div class="message">
+                    <p class="text">{{ message.text }}</p>
+                    <p class="author">{{ message.author }}</p>
+                </div>
+            {% endif %}
+        {% endfor %}
+    </section>
+</body>
+</html>

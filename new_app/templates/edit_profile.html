@@ -1,0 +1,11 @@
+{% extends 'base.html' %}
+
+{% block content %}
+    <img src="" alt="" id="profile-img">
+    {% csrf_token %}
+    {{ form }}
+    <button id="edit-profile" onclick="edit_profile();">Edit</button>
+
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.4/jquery.min.js"></script>
+    <script src="../static/js/edit_profile.js"></script>
+{% endblock %}
